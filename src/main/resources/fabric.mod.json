@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "healthnfoodtweaker",
+  "version": "${version}",
+  "name": "HealthNFoodTweaker",
+  "description": "A configurable Fabric mod that makes health regeneration slower and cheaper and optionally introduces passive hunger",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/healthnfoodtweaker/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.winglessbirds.healthnfoodtweaker.client.HealthNFoodTweakerClient"
+    ],
+    "main": [
+      "org.winglessbirds.healthnfoodtweaker.HealthNFoodTweaker"
+    ],
+    "modmenu": [
+      "org.winglessbirds.healthnfoodtweaker.config.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "healthnfoodtweaker.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
