@@ -2,7 +2,15 @@ package org.winglessbirds.healthnfoodtweaker.entity.player;
 
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.server.MinecraftServer;
 import org.winglessbirds.healthnfoodtweaker.HealthNFoodTweaker;
+import org.winglessbirds.healthnfoodtweaker.PlayerWatcher;
+import org.winglessbirds.healthnfoodtweaker.util.WorldExtSaveHandler;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class ExtendedPlayerEntity {
 
@@ -13,12 +21,50 @@ public class ExtendedPlayerEntity {
     private float prevFoodExhaustion;
 
     // variables that need to be saved to player's nbt
-    private int healTimer; private static final String healTimerAName = "HealTimer"; //= HealthNFoodTweaker.CFG.ticksUntilHeal;
+    private int healTimer; private static final String healTimerAName = "HealTimer";
 
     public ExtendedPlayerEntity (PlayerEntity player) {
         this.player = player;
         this.playerHunger = player.getHungerManager();
         prevFoodExhaustion = playerHunger.getExhaustion();
+
+        try {
+            if (!player.getServer().isSingleplayer()) {
+                WorldExtSaveHandler.loadPlayerData(this);
+            } else {
+                WorldExtSaveHandler.loadSPPlayerData(this);
+            }
+        } catch (Exception e) { // if anything goes wrong, assume values specified in config
+            HealthNFoodTweaker.LOG.info("Couldn't read nbt"); // TODO: don't forget to remove
+            healTimer = HealthNFoodTweaker.CFG.ticksUntilHeal;
+        }
+    }
+
+    public void DestroyExtendedPlayerEntity () { // must be called manually
+        WorldExtSaveHandler.savePlayerData(this);
+
+        // the following code is to save singleplayer data (host data)
+        MinecraftServer server;
+        try {
+            server = this.player.getServer();
+        } catch (NullPointerException e) {
+            HealthNFoodTweaker.LOG.warn("Failed to save additional player data into level data for the host player: somehow couldn't get player's server");
+            return;
+        }
+        assert server != null; // this method is NEVER called on the client side
+        if (!server.isSingleplayer()) { return; } // if current server is not singleplayer, we are not interested (multiplayer servers store player data in /playerdata/ instead of level.dat)
+        /*
+         NullPointerException in the following line is ignored because it only appears if the playerdata was constructed
+        manually and wasn't fully filled. It never appears for real players. It is only needed to find the host player,
+        and the host player must always be real.
+        */
+        PlayerEntity player = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile().getName()));
+
+        try {
+            WorldExtSaveHandler.saveSPPlayerData(PlayerWatcher.findWatcher(player).extplayer);
+        } catch (NoSuchElementException e) {
+            HealthNFoodTweaker.LOG.warn("Failed to save additional player data into level data for the host player");
+        }
     }
 
     @Override
@@ -28,6 +74,21 @@ public class ExtendedPlayerEntity {
         final ExtendedPlayerEntity otherObject = (ExtendedPlayerEntity)other;
 
         return this.player.equals(otherObject.player);
+    }
+
+    public void readNbt (NbtCompound nbt) throws NoSuchFieldException {
+        if (nbt.contains(healTimerAName, NbtElement.INT_TYPE)) {
+            this.healTimer = nbt.getInt(healTimerAName);
+
+            return;
+        }
+        throw new NoSuchFieldException();
+    }
+
+    public NbtCompound writeNbt (NbtCompound nbt) {
+        nbt.putInt(healTimerAName, this.healTimer);
+
+        return nbt;
     }
 
     private void tickHealing () {

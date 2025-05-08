@@ -3,16 +3,14 @@ package org.winglessbirds.healthnfoodtweaker;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.winglessbirds.healthnfoodtweaker.config.ModConfig;
 import org.winglessbirds.healthnfoodtweaker.event.PlayerDamageTakenEvent;
-import org.winglessbirds.healthnfoodtweaker.handlers.PlayerDamageTakenHandler;
-import org.winglessbirds.healthnfoodtweaker.handlers.PlayerJoinHandler;
-import org.winglessbirds.healthnfoodtweaker.handlers.PlayerLeaveHandler;
-import org.winglessbirds.healthnfoodtweaker.handlers.ServerTickHandler;
+import org.winglessbirds.healthnfoodtweaker.handlers.*;
 
 public class HealthNFoodTweaker implements ModInitializer {
 
