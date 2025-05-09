@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Text;
 import org.winglessbirds.healthnfoodtweaker.HealthNFoodTweaker;
 import org.winglessbirds.healthnfoodtweaker.PlayerWatcher;
 import org.winglessbirds.healthnfoodtweaker.util.WorldExtSaveHandler;
@@ -35,7 +36,6 @@ public class ExtendedPlayerEntity {
                 WorldExtSaveHandler.loadSPPlayerData(this);
             }
         } catch (Exception e) { // if anything goes wrong, assume values specified in config
-            HealthNFoodTweaker.LOG.info("Couldn't read nbt"); // TODO: don't forget to remove
             healTimer = HealthNFoodTweaker.CFG.ticksUntilHeal;
         }
     }
@@ -44,24 +44,20 @@ public class ExtendedPlayerEntity {
         WorldExtSaveHandler.savePlayerData(this);
 
         // the following code is to save singleplayer data (host data)
-        MinecraftServer server;
-        try {
-            server = this.player.getServer();
-        } catch (NullPointerException e) {
-            HealthNFoodTweaker.LOG.warn("Failed to save additional player data into level data for the host player: somehow couldn't get player's server");
-            return;
-        }
-        assert server != null; // this method is NEVER called on the client side
+        MinecraftServer server = this.player.getServer();
+        assert server != null; // the method this is in is NEVER called on the client side
         if (!server.isSingleplayer()) { return; } // if current server is not singleplayer, we are not interested (multiplayer servers store player data in /playerdata/ instead of level.dat)
         /*
          NullPointerException in the following line is ignored because it only appears if the playerdata was constructed
         manually and wasn't fully filled. It never appears for real players. It is only needed to find the host player,
         and the host player must always be real.
         */
-        PlayerEntity player = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile().getName()));
+        PlayerEntity hostPlayer = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile().getName()));
+
+        if (!this.player.equals(hostPlayer)) return; // if it wasn't the host player who has left the server, we are not interested
 
         try {
-            WorldExtSaveHandler.saveSPPlayerData(PlayerWatcher.findWatcher(player).extplayer);
+            WorldExtSaveHandler.saveSPPlayerData(PlayerWatcher.findWatcher(hostPlayer).extplayer);
         } catch (NoSuchElementException e) {
             HealthNFoodTweaker.LOG.warn("Failed to save additional player data into level data for the host player");
         }
@@ -92,6 +88,8 @@ public class ExtendedPlayerEntity {
     }
 
     private void tickHealing () {
+        if (player.getHealth() == player.getMaxHealth()) return;
+
         if (healTimer-- > 0) return;
 
         if (playerHunger.getFoodLevel() < HealthNFoodTweaker.CFG.minFoodHeal) return;

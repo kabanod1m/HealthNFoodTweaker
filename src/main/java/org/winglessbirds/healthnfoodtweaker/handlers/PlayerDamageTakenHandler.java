@@ -10,7 +10,7 @@ public class PlayerDamageTakenHandler implements PlayerDamageTakenEvent.After {
 
     @Override
     public ActionResult afterPlayerDamageTaken (PlayerEntity victim, DamageSource source, float amount) {
-        PlayerWatcher.findWatcher(victim).extplayer.onPlayerDamageTaken(); // TODO: too resource-hungry, maybe try synchronizing players in an array by entity id on server?
+        PlayerWatcher.findWatcher(victim).extplayer.onPlayerDamageTaken();
 
         return ActionResult.PASS;
     }

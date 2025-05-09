@@ -9,7 +9,7 @@ public class PlayerLeaveHandler implements ServerPlayConnectionEvents.Disconnect
 
     @Override
     public void onPlayDisconnect (ServerPlayNetworkHandler handler, MinecraftServer server) {
-        PlayerWatcher watcher = PlayerWatcher.findWatcher(handler.player); // TODO: resource-inefficient
+        PlayerWatcher watcher = PlayerWatcher.findWatcher(handler.player);
 
         watcher.extplayer.DestroyExtendedPlayerEntity();
         PlayerWatcher.instances.remove(watcher);

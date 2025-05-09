@@ -17,7 +17,7 @@ public class PlayerWatcher {
         }
         throw new NoSuchElementException("There is no such player watched!");
     }
-
+    // TODO: findWatcher methods are too resource-inefficient (it's a linear search)
     public static PlayerWatcher findWatcher (ExtendedPlayerEntity extplayer) throws NoSuchElementException {
         for (PlayerWatcher watcher : instances) {
             if (watcher.extplayer.equals(extplayer)) {

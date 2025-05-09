@@ -1,0 +1,12 @@
+{
+  "text.autoconfig.healthnfoodtweaker.title": "HealthNFoodTweaker Config",
+  "text.autoconfig.healthnfoodtweaker.option.enablePassiveHeal": "Enable passive healing",
+  "text.autoconfig.healthnfoodtweaker.option.resetHealOnHit": "Reset healing progress on damage",
+  "text.autoconfig.healthnfoodtweaker.option.disableVanillaHeal": "Disable Vanilla healing",
+  "text.autoconfig.healthnfoodtweaker.option.enablePassiveHunger": "Enable passive hunger",
+  "text.autoconfig.healthnfoodtweaker.option.ticksUntilHeal": "Heal every (ticks)",
+  "text.autoconfig.healthnfoodtweaker.option.minFoodHeal": "Passive healing min. food level",
+  "text.autoconfig.healthnfoodtweaker.option.healthToHeal": "How much to passively heal",
+  "text.autoconfig.healthnfoodtweaker.option.healExhaustion": "Food (exhaustion) cost for healing",
+  "text.autoconfig.healthnfoodtweaker.option.passiveExhaustion": "Passive hunger exhaustion amount"
+}

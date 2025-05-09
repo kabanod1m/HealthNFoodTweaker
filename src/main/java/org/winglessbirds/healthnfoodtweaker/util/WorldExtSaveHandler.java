@@ -66,9 +66,7 @@ public class WorldExtSaveHandler {
             File dirMod = initializeModFolder(extplayer.player.getServer().getSavePath(WorldSavePath.PLAYERDATA));
 
             File file = new File(dirMod, extplayer.player.getUuidAsString() + ".dat");
-            if (file.exists() && file.isFile()) {
-                nbtCompound = NbtIo.readCompressed(file);
-            }
+            nbtCompound = NbtIo.readCompressed(file);
         } catch (Exception e) {
             throw new NoSuchFileException("Failed to load additional player data for " + extplayer.player.getName().getString());
         }
@@ -89,9 +87,7 @@ public class WorldExtSaveHandler {
             File dirMod = initializeModFolder(extplayer.player.getServer().getSavePath(WorldSavePath.PLAYERDATA));
 
             File file = new File(dirMod, "level" + ".dat");
-            if (file.exists() && file.isFile()) {
-                nbtCompound = NbtIo.readCompressed(file);
-            }
+            nbtCompound = NbtIo.readCompressed(file);
         } catch (Exception e) {
             throw new NoSuchFileException("Failed to load additional player data for host player " + extplayer.player.getName().getString());
         }
