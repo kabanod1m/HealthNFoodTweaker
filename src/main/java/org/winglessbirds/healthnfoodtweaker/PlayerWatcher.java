@@ -7,24 +7,10 @@ import java.util.*;
 
 public class PlayerWatcher {
 
-    public static List<PlayerWatcher> instances = new Vector<>();
+    public static Map<UUID, PlayerWatcher> instances = new HashMap<>();
 
-    public static PlayerWatcher findWatcher (PlayerEntity player) throws NoSuchElementException {
-        for (PlayerWatcher watcher : instances) {
-            if (watcher.extplayer.player.equals(player)) {
-                return watcher;
-            }
-        }
-        throw new NoSuchElementException("There is no such player watched!");
-    }
-    // TODO: findWatcher methods are too resource-inefficient (it's a linear search)
-    public static PlayerWatcher findWatcher (ExtendedPlayerEntity extplayer) throws NoSuchElementException {
-        for (PlayerWatcher watcher : instances) {
-            if (watcher.extplayer.equals(extplayer)) {
-                return watcher;
-            }
-        }
-        throw new NoSuchElementException("There is no such player watched!");
+    public static PlayerWatcher getWatcher (PlayerEntity player) {
+        return instances.get(player.getUuid());
     }
 
     public ExtendedPlayerEntity extplayer;

@@ -8,7 +8,7 @@ public class ServerTickHandler implements ServerTickEvents.EndTick {
 
     @Override
     public void onEndTick (MinecraftServer server) {
-        for (PlayerWatcher watcher : PlayerWatcher.instances) {
+        for (PlayerWatcher watcher : PlayerWatcher.instances.values()) {
             watcher.tick();
         }
     }

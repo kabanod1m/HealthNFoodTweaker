@@ -5,12 +5,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.Text;
 import org.winglessbirds.healthnfoodtweaker.HealthNFoodTweaker;
 import org.winglessbirds.healthnfoodtweaker.PlayerWatcher;
 import org.winglessbirds.healthnfoodtweaker.util.WorldExtSaveHandler;
 
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class ExtendedPlayerEntity {
@@ -56,11 +54,7 @@ public class ExtendedPlayerEntity {
 
         if (!this.player.equals(hostPlayer)) return; // if it wasn't the host player who has left the server, we are not interested
 
-        try {
-            WorldExtSaveHandler.saveSPPlayerData(PlayerWatcher.findWatcher(hostPlayer).extplayer);
-        } catch (NoSuchElementException e) {
-            HealthNFoodTweaker.LOG.warn("Failed to save additional player data into level data for the host player");
-        }
+        WorldExtSaveHandler.saveSPPlayerData(PlayerWatcher.getWatcher(hostPlayer).extplayer);
     }
 
     @Override

@@ -10,7 +10,7 @@ public class PlayerDamageTakenHandler implements PlayerDamageTakenEvent.After {
 
     @Override
     public ActionResult afterPlayerDamageTaken (PlayerEntity victim, DamageSource source, float amount) {
-        PlayerWatcher.findWatcher(victim).extplayer.onPlayerDamageTaken();
+        PlayerWatcher.getWatcher(victim).extplayer.onPlayerDamageTaken();
 
         return ActionResult.PASS;
     }
