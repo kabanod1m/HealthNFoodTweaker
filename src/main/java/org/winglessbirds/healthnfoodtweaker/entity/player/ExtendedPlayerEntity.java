@@ -112,9 +112,12 @@ public class ExtendedPlayerEntity {
     private void tickHealing () {
         if (player.getHealth() == player.getMaxHealth()) return;
 
-        if (healTimer-- > 0) return;
+        if (playerHunger.getFoodLevel() < HealthNFoodTweaker.CFG.minFoodHeal) {
+            healTimer = HealthNFoodTweaker.CFG.ticksUntilHeal;
+            return;
+        }
 
-        if (playerHunger.getFoodLevel() < HealthNFoodTweaker.CFG.minFoodHeal) return;
+        if (healTimer-- > 0) return;
 
         playerHunger.addExhaustion(HealthNFoodTweaker.CFG.healExhaustion);
         player.heal(HealthNFoodTweaker.CFG.healthToHeal);
