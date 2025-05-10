@@ -13,48 +13,76 @@ import java.util.Objects;
 
 public class ExtendedPlayerEntity {
 
+    public enum CreateDestroyReason {
+        JOINLEAVE, RESPAWNDEATH
+    }
+
     public final PlayerEntity player;
     private final HungerManager playerHunger;
 
     // variables for runtime logic
     private float prevFoodExhaustion;
 
-    // variables that need to be saved to player's nbt
+    // variables that need to be saved to disk
     private int healTimer; private static final String healTimerAName = "HealTimer";
 
-    public ExtendedPlayerEntity (PlayerEntity player) {
+    public ExtendedPlayerEntity (PlayerEntity player, CreateDestroyReason reason) {
         this.player = player;
         this.playerHunger = player.getHungerManager();
         prevFoodExhaustion = playerHunger.getExhaustion();
 
-        try {
-            if (!player.getServer().isSingleplayer()) {
-                WorldExtSaveHandler.loadPlayerData(this);
-            } else {
-                WorldExtSaveHandler.loadSPPlayerData(this);
+        switch (reason) {
+            case JOINLEAVE: {
+                try {
+                    if (!player.getServer().isSingleplayer()) {
+                        WorldExtSaveHandler.loadPlayerData(this);
+                    } else {
+                        WorldExtSaveHandler.loadSPPlayerData(this);
+                    }
+                } catch (Exception e) { // if anything goes wrong, assume values specified in config
+                    healTimer = HealthNFoodTweaker.CFG.ticksUntilHeal;
+                }
             }
-        } catch (Exception e) { // if anything goes wrong, assume values specified in config
-            healTimer = HealthNFoodTweaker.CFG.ticksUntilHeal;
+            break;
+            case RESPAWNDEATH: {
+                healTimer = HealthNFoodTweaker.CFG.ticksUntilHeal;
+            }
         }
     }
 
-    public void DestroyExtendedPlayerEntity () { // must be called manually
-        WorldExtSaveHandler.savePlayerData(this);
+    public void DestroyExtendedPlayerEntity (CreateDestroyReason reason) { // must be called manually
+        switch (reason) {
+            case JOINLEAVE: {
+                WorldExtSaveHandler.savePlayerData(this);
 
-        // the following code is to save singleplayer data (host data)
-        MinecraftServer server = this.player.getServer();
-        assert server != null; // the method this is in is NEVER called on the client side
-        if (!server.isSingleplayer()) { return; } // if current server is not singleplayer, we are not interested (multiplayer servers store player data in /playerdata/ instead of level.dat)
-        /*
-         NullPointerException in the following line is ignored because it only appears if the playerdata was constructed
-        manually and wasn't fully filled. It never appears for real players. It is only needed to find the host player,
-        and the host player must always be real.
-        */
-        PlayerEntity hostPlayer = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile().getName()));
+                // the following code is to save singleplayer data (host data)
+                MinecraftServer server = this.player.getServer();
+                assert server != null; // the method this is in is NEVER called on the client side
+                if (!server.isSingleplayer()) { return; } // if current server is not singleplayer, we are not interested (multiplayer servers store player data in /playerdata/ instead of level.dat)
+                /*
+                 NullPointerException in the following line is ignored because it only appears if the playerdata was constructed
+                manually and wasn't fully filled. It never appears for real players. It is only needed to find the host player,
+                and the host player must always be real.
+                */
+                PlayerEntity hostPlayer = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile().getName()));
 
-        if (!this.player.equals(hostPlayer)) return; // if it wasn't the host player who has left the server, we are not interested
+                if (!this.player.equals(hostPlayer)) return; // if it wasn't the host player who has left the server, we are not interested
 
-        WorldExtSaveHandler.saveSPPlayerData(PlayerWatcher.getWatcher(hostPlayer).extplayer);
+                PlayerWatcher watcher;
+                try {
+                    watcher = PlayerWatcher.getWatcher(hostPlayer);
+                } catch (NullPointerException e) {
+                    HealthNFoodTweaker.LOG.warn("Something is going wrong! DestroyExtendedPlayerEntity tried getting a player that doesn't exist:\n" + e.getMessage());
+                    return;
+                }
+                WorldExtSaveHandler.saveSPPlayerData(watcher.extplayer);
+            }
+            break;
+            case RESPAWNDEATH: {
+                return;
+            }
+        }
+
     }
 
     @Override

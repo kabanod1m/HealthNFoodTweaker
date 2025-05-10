@@ -7,16 +7,24 @@ import java.util.*;
 
 public class PlayerWatcher {
 
-    public static Map<UUID, PlayerWatcher> instances = new HashMap<>();
+    public static Map<UUID, PlayerWatcher> instances;
 
-    public static PlayerWatcher getWatcher (PlayerEntity player) {
-        return instances.get(player.getUuid());
+    public static void initInstances (int maxPlayers) {
+        instances = new HashMap<>(maxPlayers + 1, 1.0f); // NEVER increase capacity of the hashmap
+    }
+
+    public static PlayerWatcher getWatcher (PlayerEntity player) throws NullPointerException {
+        PlayerWatcher toReturn = instances.get(player.getUuid());
+
+        if (toReturn == null) throw new NullPointerException("Currently not tracking this player");
+
+        return toReturn;
     }
 
     public ExtendedPlayerEntity extplayer;
 
-    public PlayerWatcher (PlayerEntity player) {
-        this.extplayer = new ExtendedPlayerEntity(player);
+    public PlayerWatcher (PlayerEntity player, ExtendedPlayerEntity.CreateDestroyReason reason) {
+        this.extplayer = new ExtendedPlayerEntity(player, reason);
     }
 
     public void tick () {

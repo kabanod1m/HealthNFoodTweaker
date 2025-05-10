@@ -3,6 +3,8 @@ package org.winglessbirds.healthnfoodtweaker;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -25,10 +27,13 @@ public class HealthNFoodTweaker implements ModInitializer {
         CFG = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         // register server-side event handlers
-        ServerPlayConnectionEvents.JOIN.register(new PlayerJoinHandler());
-        ServerPlayConnectionEvents.DISCONNECT.register(new PlayerLeaveHandler());
+        ServerPlayConnectionEvents.JOIN.register(new PlayerJoinRespawnHandler());
+        ServerPlayerEvents.AFTER_RESPAWN.register(new PlayerJoinRespawnHandler());
+        ServerPlayConnectionEvents.DISCONNECT.register(new PlayerLeaveDeathHandler());
+        ServerLivingEntityEvents.ALLOW_DEATH.register(new PlayerLeaveDeathHandler());
         ServerTickEvents.END_SERVER_TICK.register(new ServerTickHandler());
         PlayerDamageTakenEvent.AFTER.register(new PlayerDamageTakenHandler());
+        ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartHandler());
     }
 
 }
