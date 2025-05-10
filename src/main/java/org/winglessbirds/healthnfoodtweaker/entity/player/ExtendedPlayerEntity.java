@@ -126,7 +126,7 @@ public class ExtendedPlayerEntity {
     }
 
     private void tickHunger () {
-        if (playerHunger.getExhaustion() == prevFoodExhaustion) playerHunger.addExhaustion(HealthNFoodTweaker.CFG.passiveExhaustion);
+        if (playerHunger.getExhaustion() == prevFoodExhaustion) playerHunger.addExhaustion(HealthNFoodTweaker.CFG.passiveExhaustion * ((!HealthNFoodTweaker.CFG.disableVanillaSaturation && playerHunger.getSaturationLevel() > 0.0f) ? HealthNFoodTweaker.CFG.passiveExhaustionSatMul : 1.0f));
         prevFoodExhaustion = playerHunger.getExhaustion();
     }
 

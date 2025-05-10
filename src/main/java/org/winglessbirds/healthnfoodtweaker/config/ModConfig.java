@@ -17,6 +17,9 @@ public class ModConfig implements ConfigData {
     @Comment("Whether to disable health replenishment from the Vanilla hunger system (that is fast and costs a lot of food)")
     public boolean disableVanillaHeal = true;
 
+    @Comment("Saturation in Vanilla is a second, invisible (made visible by some mods) hunger bar that regenerates you faster if it's not empty.\nDefault settings of this mod burn through saturation faster using passive hunger than through food levels but you can also disable it completely using this option.\n(Disabling it will make the game always assume saturation is 0)")
+    public boolean disableVanillaSaturation = false;
+
     @Comment("In Vanilla Minecraft actions such as walking and standing still don't use up any food at all,\nmeaning it's possible to stay AFK and never die from hunger.\nThis adds passive food drain even when doing nothing, but only when food isn't drained in other ways currently.")
     public boolean enablePassiveHunger = true;
 
@@ -32,7 +35,10 @@ public class ModConfig implements ConfigData {
     @Comment("How much food passive healing should cost.\n1 food level (or saturation if you have some) is spent when Exhaustion reaches 4.0.\nFor comparison, healing half a heart in Vanilla costs 6.0 Exhaustion. Jumping 1 time costs 0.05.")
     public float healExhaustion = 0.0f;
 
-    @Comment("How much exhaustion should be added each tick (1/20th of a second) if passive hunger is enabled above.\n1 food level (or saturation if you have some) is spent when Exhaustion reaches 4.0.\nFor comparison, when under the Hunger effect, each tick costs 0.005 Exhaustion. That is 2.56 times more than the default value here.")
-    public float passiveExhaustion = 0.001953125f;
+    @Comment("How much exhaustion should be added each tick (1/20th of a second) if passive hunger is enabled above.\n1 food level (or saturation if you have some) is spent when Exhaustion reaches 4.0.\nFor comparison, when under the Hunger effect, each tick costs 0.005 Exhaustion. That is 10.24 times more than the default value here. (0.00048828125)")
+    public float passiveExhaustion = 0.00048828125f;
+
+    @Comment("By how much should Passive hunger exhaustion amount be multiplied when some saturation is present.")
+    public float passiveExhaustionSatMul = 4.0f;
 
 }
