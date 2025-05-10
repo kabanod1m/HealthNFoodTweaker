@@ -14,10 +14,13 @@ public class ModConfig implements ConfigData {
     @Comment("Whether to reset waiting time until the next passive healing tick on taking damage to \"Heal every (ticks)\"")
     public boolean resetHealOnHit = true;
 
+    @Comment("Whether to reset player's exhaustion upon eating something.\n1 food level (or saturation if you have some) is spent when Exhaustion reaches 4.0.\n\nMight help a little if you for some reason prefer to have \"Also disable Vanilla saturation\" on true.")
+    public boolean resetExhaustionOnEat = false;
+
     @Comment("Whether to disable health replenishment from the Vanilla hunger system (that is fast and costs a lot of food)")
     public boolean disableVanillaHeal = true;
 
-    @Comment("Saturation in Vanilla is a second, invisible (made visible by some mods) hunger bar that regenerates you faster if it's not empty.\nDefault settings of this mod burn through saturation faster using passive hunger than through food levels but you can also disable it completely using this option.\n(Disabling it will make the game always assume saturation is 0)")
+    @Comment("Value \"true\" not recommended. Reason: you will get really hungry very fast, actions' hunger costs are tweaked to account for saturation system in Vanilla.\n\nSaturation in Vanilla is a second, invisible (made visible by some mods) hunger bar that regenerates you faster if it's not empty.\nDefault settings of this mod burn through saturation faster using passive hunger than through food levels but you can also disable it completely using this option.\n(Disabling it will make the game always assume saturation is 0)")
     public boolean disableVanillaSaturation = false;
 
     @Comment("In Vanilla Minecraft actions such as walking and standing still don't use up any food at all,\nmeaning it's possible to stay AFK and never die from hunger.\nThis adds passive food drain even when doing nothing, but only when food isn't drained in other ways currently.")

@@ -2,6 +2,7 @@
   "text.autoconfig.healthnfoodtweaker.title": "HealthNFoodTweaker Config",
   "text.autoconfig.healthnfoodtweaker.option.enablePassiveHeal": "Enable passive healing",
   "text.autoconfig.healthnfoodtweaker.option.resetHealOnHit": "Reset healing progress on damage",
+  "text.autoconfig.healthnfoodtweaker.option.resetExhaustionOnEat": "Reset exhaustion when eating",
   "text.autoconfig.healthnfoodtweaker.option.disableVanillaHeal": "Disable Vanilla healing",
   "text.autoconfig.healthnfoodtweaker.option.disableVanillaSaturation": "Also disable Vanilla saturation",
   "text.autoconfig.healthnfoodtweaker.option.enablePassiveHunger": "Enable passive hunger",

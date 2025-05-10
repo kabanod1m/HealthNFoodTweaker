@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.winglessbirds.healthnfoodtweaker.config.ModConfig;
 import org.winglessbirds.healthnfoodtweaker.event.PlayerDamageTakenEvent;
+import org.winglessbirds.healthnfoodtweaker.event.PlayerEatEvent;
 import org.winglessbirds.healthnfoodtweaker.handlers.*;
 
 public class HealthNFoodTweaker implements ModInitializer {
@@ -33,6 +34,7 @@ public class HealthNFoodTweaker implements ModInitializer {
         ServerLivingEntityEvents.ALLOW_DEATH.register(new PlayerLeaveDeathHandler());
         ServerTickEvents.END_SERVER_TICK.register(new ServerTickHandler());
         PlayerDamageTakenEvent.AFTER.register(new PlayerDamageTakenHandler());
+        PlayerEatEvent.AFTER.register(new PlayerEatHandler());
         ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartHandler());
     }
 

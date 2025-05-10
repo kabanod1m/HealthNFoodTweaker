@@ -14,12 +14,12 @@ public abstract class HungerManagerMixin {
     @Redirect(method = "update(Lnet/minecraft/entity/player/PlayerEntity;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/HungerManager;saturationLevel:F", opcode = Opcodes.GETFIELD))
     private float disablePlayerSaturationInUpdate (HungerManager hungerManager) {
         if (HealthNFoodTweaker.CFG.disableVanillaSaturation) return 0.0f; return hungerManager.getSaturationLevel();
-    }
+    } // treat saturation level as always 0 without actually changing it if saturation is disabled in config
 
     @Redirect(method = "add(IF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/HungerManager;saturationLevel:F", opcode = Opcodes.PUTFIELD))
     private void disablePlayerSaturationInAdd (HungerManager hungerManager, float newValue) {
         if (HealthNFoodTweaker.CFG.disableVanillaSaturation) return; hungerManager.setSaturationLevel(newValue);
-    }
+    } // don't change saturation level upon eating if saturation is disabled in config
 
     // None of the following two methods prevent foodTickTimer from ticking so starving from hunger still works
 
