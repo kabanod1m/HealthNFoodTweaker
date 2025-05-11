@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameRules;
 import org.winglessbirds.healthnfoodtweaker.HealthNFoodTweaker;
 import org.winglessbirds.healthnfoodtweaker.PlayerWatcher;
 import org.winglessbirds.healthnfoodtweaker.util.WorldExtSaveHandler;
@@ -135,7 +136,7 @@ public class ExtendedPlayerEntity {
 
     public void tick () {
         if (HealthNFoodTweaker.CFG.enablePassiveHunger) tickHunger();
-        if (HealthNFoodTweaker.CFG.enablePassiveHeal) tickHealing();
+        if (HealthNFoodTweaker.CFG.enablePassiveHeal && this.player.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION)) tickHealing();
     }
 
 }

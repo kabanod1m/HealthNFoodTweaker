@@ -8,7 +8,7 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config.Gui.Background("minecraft:textures/block/dirt.png")
 public class ModConfig implements ConfigData {
 
-    @Comment("Configurable using settings below")
+    @Comment("Configurable using settings below. If doesn't work, make sure gamerule naturalRegeneration is true.")
     public boolean enablePassiveHeal = true;
 
     @Comment("Whether to reset waiting time until the next passive healing tick on taking damage to \"Heal every (ticks)\"")
@@ -29,8 +29,8 @@ public class ModConfig implements ConfigData {
     @Comment("Ticks until you will be passively healed 1 time after taking damage.\n\nThere are 20 ticks in 1 second, so 600 ticks = 30 seconds.")
     public int ticksUntilHeal = 600;
 
-    @Comment("Minimum food level to be able to heal. Set to 0 to always be able to passively heal.\n\nMaximum food level is 20, so 8 = 4 shanks (8 half-shanks).")
-    public int minFoodHeal = 8;
+    @Comment("Minimum food level to be able to heal. Set to 0 to always be able to passively heal.\n\nMaximum food level is 20, so 9 = 4.5 shanks (9 half-shanks). Having 4 shanks will not allow regeneration.")
+    public int minFoodHeal = 9;
 
     @Comment("How much health must be healed every time you passively heal up.\n\nMaximum health is 20, so 1 = half a heart.")
     public float healthToHeal = 1.0f;
