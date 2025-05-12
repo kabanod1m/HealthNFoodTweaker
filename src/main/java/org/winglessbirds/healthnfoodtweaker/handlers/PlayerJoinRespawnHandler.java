@@ -15,6 +15,9 @@ public class PlayerJoinRespawnHandler implements ServerPlayConnectionEvents.Join
     @Override
     public void onPlayReady (ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         PlayerEntity player = handler.player;
+
+        if (player.isDead()) return;
+
         PlayerWatcher.instances.put(player.getUuid(), new PlayerWatcher(player, ExtendedPlayerEntity.CreateDestroyReason.JOINLEAVE));
     }
 
