@@ -44,4 +44,13 @@ public class ModConfig implements ConfigData {
     @Comment("By how much should Passive hunger exhaustion amount be multiplied when some saturation is present.")
     public float passiveExhaustionSatMul = 4.0f;
 
+    @Comment("How much health 1 food level will regenerate after sleeping through a night.\n\nMaximum health is 20, so 1 = half a heart.")
+    public float sleepHealthToHeal = 2.0f;
+
+    @Comment("How much food levels sleeping through the night costs. To disable this behavior set 0 here.\n\nMaximum food level is 20, so 5 = 2.5 shanks (5 half-shanks).")
+    public int sleepFood = 5;
+
+    @Comment("Food level at which sleeping becomes cost-free and stops regenerating health.")
+    public int sleepFoodMin = 7;
+
 }

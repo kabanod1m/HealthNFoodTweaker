@@ -1,6 +1,7 @@
 package org.winglessbirds.healthnfoodtweaker.mixin;
 
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.winglessbirds.healthnfoodtweaker.HealthNFoodTweaker;
 import org.winglessbirds.healthnfoodtweaker.event.PlayerDamageTakenEvent;
 import org.winglessbirds.healthnfoodtweaker.event.PlayerEatEvent;
 

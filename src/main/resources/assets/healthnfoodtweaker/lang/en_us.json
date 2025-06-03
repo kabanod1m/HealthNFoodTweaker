@@ -11,5 +11,8 @@
   "text.autoconfig.healthnfoodtweaker.option.healthToHeal": "How much to passively heal",
   "text.autoconfig.healthnfoodtweaker.option.healExhaustion": "Food (exhaustion) cost for healing",
   "text.autoconfig.healthnfoodtweaker.option.passiveExhaustion": "Passive hunger exhaustion amount",
-  "text.autoconfig.healthnfoodtweaker.option.passiveExhaustionSatMul": "Burn saturation faster by"
+  "text.autoconfig.healthnfoodtweaker.option.passiveExhaustionSatMul": "Burn saturation faster by",
+  "text.autoconfig.healthnfoodtweaker.option.sleepHealthToHeal": "Sleeping 1 food level to health",
+  "text.autoconfig.healthnfoodtweaker.option.sleepFood": "Sleeping food level cost",
+  "text.autoconfig.healthnfoodtweaker.option.sleepFoodMin": "No cost sleeping food level"
 }
