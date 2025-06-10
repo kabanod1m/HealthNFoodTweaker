@@ -35,7 +35,11 @@ public class ExtendedPlayerEntity {
         switch (reason) {
             case JOINLEAVE: {
                 try {
-                    if (!player.getServer().isSingleplayer()) {
+                    /*
+                     NullPointerException in the following line is ignored because this constructor is only ever called
+                    server-side (from ServerPlayConnectionEvents.Join).
+                    */
+                    if (!Objects.requireNonNull(player.getServer()).isSingleplayer()) {
                         WorldExtSaveHandler.loadPlayerData(this);
                     } else {
                         WorldExtSaveHandler.loadSPPlayerData(this);
@@ -65,7 +69,7 @@ public class ExtendedPlayerEntity {
                 manually and wasn't fully filled. It never appears for real players. It is only needed to find the host player,
                 and the host player must always be real.
                 */
-                PlayerEntity hostPlayer = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile().getName()));
+                PlayerEntity hostPlayer = server.getPlayerManager().getPlayer(Objects.requireNonNull(server.getHostProfile()).getName());
 
                 if (!this.player.equals(hostPlayer)) return; // if it wasn't the host player who has left the server, we are not interested
 
@@ -80,7 +84,7 @@ public class ExtendedPlayerEntity {
             }
             break;
             case RESPAWNDEATH: {
-                return;
+                //
             }
         }
 
@@ -135,6 +139,8 @@ public class ExtendedPlayerEntity {
     }
 
     public void tick () {
+        if (player.isCreative() || player.isSpectator()) return;
+
         if (HealthNFoodTweaker.CFG.enablePassiveHunger) tickHunger();
         if (HealthNFoodTweaker.CFG.enablePassiveHeal && this.player.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION)) tickHealing();
     }
